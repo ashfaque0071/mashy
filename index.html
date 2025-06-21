@@ -7,11 +7,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      overflow: hidden;
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
       background: #0d0b1a;
       color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      padding-bottom: 5rem;
     }
     #particle-bg, #confetti-canvas {
       position: fixed;
@@ -122,21 +124,20 @@
 
   <section class="love-notes">
     <div class="section-title">FROM ME:</div>
-    <p>Every beat of my heart gets me closer to you.I love you Mahi.</p>
+    <p>Every beat of my heart gets me closer to you. I love you Mahi.</p>
     <p id="hidden-message">You are my universe, Mahi. Inshaallah you will succeed!</p>
     <img id="hidden-photo" src="IMG_20230404_124622.jpg" alt="Surprise Photo">
   </section>
 
   <audio id="boom-sound" src="https://www.soundjay.com/explosion/sounds/explosion-01.mp3" preload="auto"></audio>
   <audio id="confetti-sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" preload="auto"></audio>
-  <audio id="shutter-sound" src="https://www.soundjay.com/mechanical/sounds/camera-shutter-01.mp3" src="Blue-Yung-Kai.mp3"preload="auto"></audio>
+  <audio id="shutter-sound" src="https://www.soundjay.com/mechanical/sounds/camera-shutter-01.mp3" preload="auto"></audio>
 
   <script>
     const boomSound = document.getElementById('boom-sound');
     const confettiSound = document.getElementById('confetti-sound');
     const shutterSound = document.getElementById('shutter-sound');
 
-    // Starry particles
     const canvas = document.getElementById('particle-bg');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -166,7 +167,6 @@
     window.addEventListener('resize', initStars);
     initStars();
 
-    // Confetti
     const confettiCanvas = document.getElementById('confetti-canvas');
     const cCtx = confettiCanvas.getContext('2d');
     let confettis = [];
@@ -204,7 +204,6 @@
     window.addEventListener('resize', initConfetti);
     initConfetti();
 
-    // Button handlers
     document.getElementById('send-love').addEventListener('click', () => {
       boomSound.currentTime = 0;
       boomSound.play();
