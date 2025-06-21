@@ -15,6 +15,61 @@
       font-family: 'Montserrat', sans-serif;
       padding-bottom: 5rem;
     }
+
+    /* Reveal button styles */
+    #reveal-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #0d0b1a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: opacity 1s ease-out, visibility 1s ease-out;
+    }
+    
+    #reveal-container.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    #reveal-btn {
+      background: linear-gradient(45deg, #ff47a1, #ff7abb);
+      color: #fff;
+      border: none;
+      padding: 2rem 4rem;
+      font-size: 2rem;
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 30px #ff47a1, 0 0 60px #ff47a1;
+      transition: all 0.3s;
+      animation: pulse 2s infinite;
+    }
+
+    #reveal-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 50px #ff47a1, 0 0 100px #ff47a1;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* Main content starts hidden */
+    #main-content {
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #main-content.revealed {
+      opacity: 1;
+      transform: scale(1);
+    }
+
     /* Particle background behind everything */
     #particle-bg {
       position: fixed;
@@ -120,52 +175,128 @@
   </style>
 </head>
 <body>
-  <canvas id="particle-bg"></canvas>
-  <canvas id="confetti-canvas"></canvas>
+  <!-- Reveal Button Container -->
+  <div id="reveal-container">
+    <button id="reveal-btn">💕 Click to Enter My Heart 💕</button>
+  </div>
 
-  <header>
-    <h1>Mahi, The Love of My Life</h1>
-  </header>
+  <!-- Main Content (Initially Hidden) -->
+  <div id="main-content">
+    <canvas id="particle-bg"></canvas>
+    <canvas id="confetti-canvas"></canvas>
 
-  <section class="hero">
-    <h2>Somethings there to see.. 😇😇</h2>
-    <p>Choose <strong>LOVE &lt;3</strong> for kisses, or <strong>SURPRISE</strong> for a marvelous love<br> or or.....</p>
-    <button class="btn" id="send-love">LOVE &lt;3</button>
-    <button class="btn" id="surprise-me">SURPRISE</button>
-    <button class="btn" id="surprise-photo">mahi</button>
-  </section>
+    <header>
+      <h1>Mahi, The Love of My Life</h1>
+    </header>
 
-  <section class="photos">
-    <div class="section-title">OUR MEMORIES</div>
-    <div class="photos-grid">
-      <img src="IMG-20241109-WA0059(1).jpg" alt="Memory 1">
-      <img src="IMG_20241123_114528.jpg" alt="Memory 2">
-      <img src="IMG_20230608_134613.jpg" alt="Memory 3">
-      <img src="IMG_20250226_120558.jpg" alt="Memory 4">
-    </div>
-  </section>
-  <br>scroll down..<br>
+    <section class="hero">
+      <h2>Somethings there to see.. 😇😇</h2>
+      <p>Choose <strong>LOVE &lt;3</strong> for kisses, or <strong>SURPRISE</strong> for a marvelous love<br> or or.....</p>
+      <button class="btn" id="send-love">LOVE &lt;3</button>
+      <button class="btn" id="surprise-me">SURPRISE</button>
+      <button class="btn" id="surprise-photo">mahi</button>
+    </section>
 
-  <section class="love-notes">
-    <div class="section-title">FROM ME:</div>
-    <p>Every beat of my heart gets me closer to you. I love you Mahi.</p>
-    <p id="hidden-message">You are my universe, Mahi. Inshaallah you will succeed!</p>
-    <img id="hidden-photo" src="IMG_20230404_124622.jpg" alt="Surprise Photo">
-  </section>
+    <section class="photos">
+      <div class="section-title">OUR MEMORIES</div>
+      <div class="photos-grid">
+        <img src="IMG-20241109-WA0059(1).jpg" alt="Memory 1">
+        <img src="IMG_20241123_114528.jpg" alt="Memory 2">
+        <img src="IMG_20230608_134613.jpg" alt="Memory 3">
+        <img src="IMG_20250226_120558.jpg" alt="Memory 4">
+      </div>
+    </section>
+    <br>scroll down..<br>
+
+    <section class="love-notes">
+      <div class="section-title">FROM ME:</div>
+      <p>Every beat of my heart gets me closer to you. I love you Mahi.</p>
+      <p id="hidden-message">You are my universe, Mahi. Inshaallah you will succeed!</p>
+      <img id="hidden-photo" src="IMG_20230404_124622.jpg" alt="Surprise Photo">
+    </section>
+  </div>
 
   <audio id="boom-sound" src="https://www.soundjay.com/explosion/sounds/explosion-01.mp3" preload="auto"></audio>
   <audio id="confetti-sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" preload="auto"></audio>
   <audio id="shutter-sound" src="Blue-Yung-Kai.mp3" preload="auto"></audio>
+  <audio id="reveal-sound" src="Blue-Yung-Kai.mp3" preload="auto"></audio>
+  <audio id="magic-sound" src="https://cdnjs.cloudflare.com/ajax/libs/ion-sound/3.0.7/sounds/water_droplet.mp3" preload="auto"></audio>
 
   <script>
+    // Reveal functionality
+    document.getElementById('reveal-btn').addEventListener('click', function() {
+      const revealContainer = document.getElementById('reveal-container');
+      const mainContent = document.getElementById('main-content');
+      const revealSound = document.getElementById('reveal-sound');
+      const magicSound = document.getElementById('magic-sound');
+      
+      // Play reveal sound immediately
+      revealSound.currentTime = 0;
+      revealSound.play().catch(e => console.log('Audio play failed:', e));
+      
+      // Hide the reveal container
+      revealContainer.classList.add('hidden');
+      
+      // Show main content with animation after a short delay
+      setTimeout(() => {
+        // Play magic sound when content appears
+        magicSound.currentTime = 0;
+        magicSound.play().catch(e => console.log('Audio play failed:', e));
+        
+        mainContent.classList.add('revealed');
+        // Start particle animation after reveal
+        initStars();
+        initConfetti();
+        
+        // Create a magical sparkle effect during reveal
+        createRevealSparkles();
+      }, 500);
+    });
+
     const boomSound = document.getElementById('boom-sound');
     const confettiSound = document.getElementById('confetti-sound');
     const shutterSound = document.getElementById('shutter-sound');
 
+    // Function to create magical sparkles during reveal
+    function createRevealSparkles() {
+      for(let i = 0; i < 50; i++) {
+        setTimeout(() => {
+          const sparkle = document.createElement('div');
+          sparkle.innerText = '✨';
+          sparkle.style.position = 'fixed';
+          sparkle.style.left = Math.random() * window.innerWidth + 'px';
+          sparkle.style.top = Math.random() * window.innerHeight + 'px';
+          sparkle.style.fontSize = (Math.random() * 1.5 + 0.5) + 'rem';
+          sparkle.style.opacity = 1;
+          sparkle.style.pointerEvents = 'none';
+          sparkle.style.zIndex = 999;
+          document.body.appendChild(sparkle);
+          
+          // Animate sparkle
+          let opacity = 1;
+          let scale = 1;
+          const fadeOut = setInterval(() => {
+            opacity -= 0.05;
+            scale += 0.05;
+            sparkle.style.opacity = opacity;
+            sparkle.style.transform = `scale(${scale})`;
+            if(opacity <= 0) {
+              clearInterval(fadeOut);
+              sparkle.remove();
+            }
+          }, 50);
+        }, i * 20);
+      }
+    }
+
     const canvas = document.getElementById('particle-bg');
     const ctx = canvas.getContext('2d');
     let stars = [];
+    let animationStarted = false;
+    
     function initStars() {
+      if (animationStarted) return;
+      animationStarted = true;
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       stars = Array.from({ length: 100 }, () => ({ x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2,s:Math.random()*.5+.2 }));
@@ -176,15 +307,17 @@
       stars.forEach(s=>{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,2*Math.PI);ctx.fillStyle='#fff';ctx.fill();s.y-=s.s;if(s.y<0){s.y=canvas.height;s.x=Math.random()*canvas.width;}});
       requestAnimationFrame(drawStars);
     }
-    window.addEventListener('resize',initStars);
-    initStars();
+    window.addEventListener('resize', () => {
+      if (animationStarted) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+    });
 
     const confettiCanvas = document.getElementById('confetti-canvas'), cCtx=confettiCanvas.getContext('2d'); let confettis=[];
     function initConfetti(){confettiCanvas.width=window.innerWidth;confettiCanvas.height=window.innerHeight;}
     function createConfetti(){for(let i=0;i<200;i++){confettis.push({x:Math.random()*confettiCanvas.width,y:Math.random()*confettiCanvas.height-100,d:Math.random()*20,color:`hsl(${Math.random()*360},100%,50%)`});}confettiSound.currentTime=0;confettiSound.play();animateConfetti();setTimeout(()=>{confettis=[];cCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);},3000);}    
     function animateConfetti(){cCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);confettis.forEach(f=>{cCtx.fillStyle=f.color;cCtx.fillRect(f.x,f.y,5,5);f.y+=Math.cos(f.d)+3;f.x+=Math.sin(f.d);});if(confettis.length)requestAnimationFrame(animateConfetti);}    
-    window.addEventListener('resize',initConfetti);
-    initConfetti();
 
     document.getElementById('send-love').addEventListener('click',()=>{boomSound.currentTime=0;boomSound.play();for(let i=0;i<15;i++){const h=document.createElement('div');h.innerText='💥💕';h.style.position='fixed';h.style.left=window.innerWidth/2+(Math.random()*200-100)+'px';h.style.top=window.innerHeight/2+'px';h.style.fontSize=(Math.random()*1.5+1)+'rem';h.style.opacity=1;document.body.appendChild(h);animateHeart(h);} });
     document.getElementById('surprise-me').addEventListener('click',()=>{document.getElementById('hidden-message').style.display='block';createConfetti();});
