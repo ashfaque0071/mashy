@@ -3,182 +3,244 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mahi → Love Story</title>
+  <title>Mahi → Love Explosion</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(120deg, #ff9ec4, #ffeef8, #ffd6f0);
-      background-size: 400% 400%;
-      animation: gradientMove 15s ease infinite;
-      color: #333;
-      line-height: 1.6;
-      overflow-x: hidden;
+      overflow: hidden;
+      background: #0d0b1a;
+      color: #fff;
     }
 
-    @keyframes gradientMove {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    #particle-bg, #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: -1;
     }
 
     header {
-      background: rgba(255, 111, 164, 0.85);
-      padding: 2rem 1rem;
       text-align: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      backdrop-filter: blur(10px);
+      padding: 3rem 1rem;
     }
     header h1 {
       font-family: 'Great Vibes', cursive;
-      font-size: 3rem;
-      color: #fff;
-      text-shadow: 2px 2px 4px #e94e77;
+      font-size: 4rem;
+      color: #ff47a1;
+      text-shadow: 0 0 20px #ff47a1, 0 0 40px #ff47a1;
     }
 
-    .hero {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+    .hero, .photos, .love-notes {
       text-align: center;
-      padding: 4rem 1rem;
-      color: #fff;
+      padding: 2rem 1rem;
     }
-    .hero h2 {
-      font-size: 3rem;
+    .hero h2 { font-size: 2.5rem; margin-bottom: 1rem; }
+    .hero p { font-size: 1.1rem; }
+
+    .section-title {
+      font-size: 2rem;
       margin-bottom: 1rem;
-      color: #fff;
-      text-shadow: 2px 2px 5px #ff3d7f;
+      color: #ff7abb;
+      text-shadow: 0 0 10px #ff7abb;
     }
-    .hero p {
-      max-width: 600px;
-      margin-bottom: 2rem;
-      font-size: 1.2rem;
-    }
-    .heart-btn {
-      background: #ff3d7f;
+
+    .heart-btn, .surprise-btn {
+      background: #ff4e91;
       color: #fff;
       border: none;
-      padding: 0.75rem 1.5rem;
-      font-size: 1.1rem;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      transition: transform 0.2s, background 0.3s;
+      box-shadow: 0 0 10px #ff4e91;
+      transition: transform 0.2s;
+      margin: 1rem;
     }
-    .heart-btn:hover {
-      background: #e6006d;
-      transform: scale(1.1);
-    }
+    .heart-btn:active { animation: boom 0.6s ease-out forwards; }
+    .surprise-btn:hover, .heart-btn:hover { transform: scale(1.05); }
+    @keyframes boom { 0%{transform:scale(1);}30%{transform:scale(1.5);}100%{transform:scale(1);} }
 
-    .about {
-      background: rgba(255, 255, 255, 0.8);
-      padding: 3rem 1rem;
-      backdrop-filter: blur(5px);
-    }
-    .about h3 {
-      text-align: center;
-      font-size: 2.2rem;
-      margin-bottom: 1.5rem;
-      color: #ff3d7f;
-    }
-    .about p {
-      max-width: 800px;
-      margin: 0 auto;
-      font-size: 1.2rem;
-    }
-
-    .gallery {
+    .photos-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
-      padding: 2rem 1rem;
+      max-width: 800px;
+      margin: auto;
     }
-    .gallery img {
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-      transition: transform 0.3s, box-shadow 0.3s;
+    .photos-grid img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      transition: transform 0.3s;
     }
-    .gallery img:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
+    .photos-grid img:hover { transform: scale(1.05); }
 
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      background: rgba(255, 111, 164, 0.9);
-      color: #fff;
-      font-size: 1rem;
+    .love-notes {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
       backdrop-filter: blur(10px);
+      max-width: 600px;
+      margin: auto;
+    }
+    .love-notes p {
+      font-size: 1rem;
+      line-height: 1.5;
+      padding: 0 1rem 1rem;
     }
 
-    .floating-heart {
-      position: fixed;
-      pointer-events: none;
-      animation: float-up 3s ease-out forwards;
-      opacity: 0.9;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+    #hidden-message {
+      display: none;
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      color: #ffd700;
+      text-shadow: 0 0 10px #ffd700;
     }
-
-    @keyframes float-up {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-250px) scale(1.8) rotate(360deg); opacity: 0; }
-    }
-
   </style>
 </head>
 <body>
+  <canvas id="particle-bg"></canvas>
+  <canvas id="confetti-canvas"></canvas>
+
   <header>
-    <h1>For Mahi, With All My Heart</h1>
+    <h1>💥 For Mahi, Boom of Love 💥</h1>
   </header>
 
   <section class="hero">
-    <h2>Hello, Beautiful!</h2>
-    <p>Every moment with you fills my heart with joy and wonder. This is a small corner of the web created to celebrate you, Mahi.</p>
-    <button class="heart-btn" id="send-love">Send a Heart</button>
+    <h2>Are you ready for love?</h2>
+    <p>Click <strong>BOOM ❤️</strong> to shower love, or <strong>Surprise Me!</strong> for a special treat.</p>
+    <button class="heart-btn" id="send-love">BOOM ❤️</button>
+    <button class="surprise-btn" id="surprise-me">Surprise Me!</button>
   </section>
 
-  <section class="about">
-    <h3>About You</h3>
-    <p>Mahi, your smile lights up the darkest days and your kindness inspires everyone around you. This website is dedicated to the warmth and love you bring into my life—every word here, every pixel, is for you.</p>
+  <section class="photos">
+    <div class="section-title">Our Memories</div>
+    <div class="photos-grid">
+      <img src="https://via.placeholder.com/400x300?text=Photo+1" alt="Memory 1">
+      <img src="https://via.placeholder.com/400x300?text=Photo+2" alt="Memory 2">
+      <img src="https://via.placeholder.com/400x300?text=Photo+3" alt="Memory 3">
+      <img src="https://via.placeholder.com/400x300?text=Photo+4" alt="Memory 4">
+    </div>
   </section>
 
-  <section class="gallery">
-    <img src="https://via.placeholder.com/400x300?text=Mahi+1" alt="Mahi Photo 1">
-    <img src="https://via.placeholder.com/400x300?text=Mahi+2" alt="Mahi Photo 2">
-    <img src="https://via.placeholder.com/400x300?text=Mahi+3" alt="Mahi Photo 3">
-    <img src="https://via.placeholder.com/400x300?text=Mahi+4" alt="Mahi Photo 4">
+  <section class="love-notes">
+    <div class="section-title">Special Love Note</div>
+    <p>Every beat of my heart echoes your name. You are the spark in my life’s sky.</p>
+    <p id="hidden-message">You are my universe, Mahi. 🌟</p>
   </section>
 
-  <footer>
-    <p>❤️ Made with <em>all</em> my love for Mahi ❤️</p>
-  </footer>
-
-  <audio id="heart-sound" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
+  <audio id="boom-sound" src="https://www.soundjay.com/explosion/sounds/explosion-01.mp3" preload="auto"></audio>
+  <audio id="confetti-sound" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" preload="auto"></audio>
 
   <script>
-    const button = document.getElementById('send-love');
-    const heartSound = document.getElementById('heart-sound');
+    // Grab audio elements
+    const boomSound = document.getElementById('boom-sound');
+    const confettiSound = document.getElementById('confetti-sound');
 
-    button.addEventListener('click', () => {
-      const heart = document.createElement('div');
-      const colors = ['#ff3d7f', '#ff85a2', '#fff', '#ffe6f0'];
-      heart.innerText = ['❤️','💖','💕','💗','💘'][Math.floor(Math.random() * 5)];
-      heart.className = 'floating-heart';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.fontSize = (Math.random() * 2 + 1) + 'rem';
-      heart.style.color = colors[Math.floor(Math.random() * colors.length)];
-      document.body.appendChild(heart);
-      heartSound.currentTime = 0;
-      heartSound.play();
-      setTimeout(() => heart.remove(), 3000);
+    // Starry particles
+    const canvas = document.getElementById('particle-bg');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function initStars() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      stars = Array.from({ length: 100 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2,
+        s: Math.random() * .5 + .2
+      }));
+      requestAnimationFrame(drawStars);
+    }
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, 2 * Math.PI);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+        s.y -= s.s;
+        if (s.y < 0) { s.y = canvas.height; s.x = Math.random() * canvas.width; }
+      });
+      requestAnimationFrame(drawStars);
+    }
+    window.addEventListener('resize', initStars);
+    initStars();
+
+    // Confetti
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const cCtx = confettiCanvas.getContext('2d');
+    let confettis = [];
+    function initConfetti() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    function createConfetti() {
+      for (let i = 0; i < 200; i++) {
+        confettis.push({
+          x: Math.random() * confettiCanvas.width,
+          y: Math.random() * confettiCanvas.height - 100,
+          d: Math.random() * 20,
+          color: `hsl(${Math.random() * 360},100%,50%)`
+        });
+      }
+      confettiSound.currentTime = 0;
+      confettiSound.play();
+      animateConfetti();
+      setTimeout(() => {
+        confettis = [];
+        cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      }, 3000);
+    }
+    function animateConfetti() {
+      cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      confettis.forEach(f => {
+        cCtx.fillStyle = f.color;
+        cCtx.fillRect(f.x, f.y, 5, 5);
+        f.y += Math.cos(f.d) + 3;
+        f.x += Math.sin(f.d);
+      });
+      if (confettis.length) requestAnimationFrame(animateConfetti);
+    }
+    window.addEventListener('resize', initConfetti);
+    initConfetti();
+
+    // Button interactions
+    document.getElementById('send-love').addEventListener('click', () => {
+      boomSound.currentTime = 0;
+      boomSound.play();
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.innerText = '💥💕';
+        heart.style.position = 'fixed';
+        heart.style.left = window.innerWidth / 2 + (Math.random() * 200 - 100) + 'px';
+        heart.style.top = window.innerHeight / 2 + 'px';
+        heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+        heart.style.opacity = 1;
+        document.body.appendChild(heart);
+        animateHeart(heart);
+      }
     });
+    document.getElementById('surprise-me').addEventListener('click', () => {
+      document.getElementById('hidden-message').style.display = 'block';
+      createConfetti();
+    });
+
+    function animateHeart(el) {
+      let x = parseFloat(el.style.left);
+      let y = parseFloat(el.style.top);
+      const dx = (Math.random() * 4 - 2);
+      const dy = -(Math.random() * 4 + 2);
+      const fade = setInterval(() => {
+        x += dx; y += dy;
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        el.style.opacity -= 0.02;
+        if (el.style.opacity <= 0) { clearInterval(fade); el.remove(); }
+      }, 20);
+    }
   </script>
 </body>
 </html>
