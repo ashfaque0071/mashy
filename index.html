@@ -115,6 +115,19 @@
       margin: 0.5rem;
       position: relative;
       z-index: 3;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .link-btn {
+      background: linear-gradient(45deg, #4ecdc4, #44a08d);
+      box-shadow: 0 0 15px #4ecdc4;
+      font-weight: 600;
+    }
+    
+    .link-btn:hover {
+      background: linear-gradient(45deg, #44a08d, #4ecdc4);
+      box-shadow: 0 0 25px #4ecdc4;
     }
     .btn:active { animation: boom 0.6s ease-out forwards; }
     .btn:hover { transform: scale(1.03); }
@@ -177,7 +190,7 @@
 <body>
   <!-- Reveal Button Container -->
   <div id="reveal-container">
-    <button id="reveal-btn">💕Enter My Queen..💕</button>
+    <button id="reveal-btn">💕ENTER MY QUEEN..💕</button>
   </div>
 
   <!-- Main Content (Initially Hidden) -->
@@ -195,6 +208,8 @@
       <button class="btn" id="send-love">LOVE &lt;3</button>
       <button class="btn" id="surprise-me">SURPRISE</button>
       <button class="btn" id="surprise-photo">mahi</button>
+      <br><br>
+      <a href="https://ashfaque0071.github.io/mash-ltd0/"  class="btn link-btn" id="special-link">💫 Visit Our Special Place 💫</a>
     </section>
 
     <section class="photos">
